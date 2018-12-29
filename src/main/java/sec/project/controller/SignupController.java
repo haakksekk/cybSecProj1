@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,9 @@ public class SignupController {
 
     @Autowired
     private SignupRepository signupRepository;
+    
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @PostConstruct
     public void init() {
@@ -37,7 +41,9 @@ public class SignupController {
 
     @RequestMapping(value = "/form", method = RequestMethod.POST)
     public String submitForm(@RequestParam String name, @RequestParam String address, Model model) throws SQLException {
-        signupRepository.save(new Signup(name, address));
+        //signupRepository.save(new Signup(name, address));
+        String sql = "INSERT INTO Signup (name, address) VALUES ('" + name + "', '" + address + "');";
+        jdbcTemplate.execute(sql);
         model.addAttribute("name", signupRepository.findFirstByOrderByIdDesc().getName());
         model.addAttribute("address", address);
         return "done";
