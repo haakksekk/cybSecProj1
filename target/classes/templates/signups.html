@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Here are listed all who have signed up for the event!</title>
+    </head>
+    <body>
+        
+        <h1>Here are listed all who have signed up for the event!</h1>
+        
+        <!-- Because of utext usage this part of the code is vulnerable to XSS attacks -->
+        <ul>
+            <li th:each="signup : ${signups}">
+                <span th:utext="${signup.name}">Name</span>
+                <span th:utext="${signup.address}">Address</span>
+            </li>
+        </ul>
+
+    </body>
+</html>
